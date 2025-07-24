@@ -1,7 +1,7 @@
 # app/controllers/borrowings_controller.rb
 class BorrowingsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_borrowing, only: [:return]
+  before_action :set_borrowing, only: [ :return ]
 
   def index
     borrowings = policy_scope(Borrowing).includes(:book, :user).order(returned_at: :desc, due_at: :desc)
@@ -14,9 +14,9 @@ class BorrowingsController < ApplicationController
     end
   end
 
-  # def show
-  #   render json: @borrowing
-  # end
+  def show
+    render json: @borrowing
+  end
 
   def new
     @borrowing = Borrowing.new(book_id: params[:book_id])
@@ -47,12 +47,12 @@ class BorrowingsController < ApplicationController
 
     if @borrowing.return!
       respond_to do |format|
-        format.html { redirect_to borrowings_path, notice: "Book marked as returned" }
+        format.html { redirect_to dashboard_borrowings_path, notice: "Book marked as returned" }
         format.json { render json: { status: "success", message: "Book returned" } }
       end
     else
       respond_to do |format|
-        format.html { redirect_to borrowings_path, alert: "Failed to mark book as returned" }
+        format.html { redirect_to dashboard_borrowings_path, alert: "Failed to mark book as returned" }
         format.json { render json: { status: "error", errors: [ "Failed to return book" ] }, status: :unprocessable_entity }
       end
     end
