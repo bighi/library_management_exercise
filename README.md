@@ -8,6 +8,12 @@ For the member user, login with `email: member@email.com` and `password: test123
 
 For the librarian user, login with `email: librarian@email.com` and `password: test123`.
 
+# Example of the interface
+
+![Example of the interface](interface_1.png)
+
+![Example of the interface](interface_2.png)
+
 # Decision log and thought process
 
 I used Devise instead of using the built-in authentication system in Rails
