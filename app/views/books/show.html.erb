@@ -1,13 +1,68 @@
-<p style="color: green"><%= notice %></p>
+<div class="container mx-auto px-4 py-8">
+  <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="p-6 md:p-8">
+      <div class="flex flex-col md:flex-row md:justify-between md:items-start gap-6">
+        <!-- Book Cover Placeholder -->
+        <div class="w-full md:w-1/3 lg:w-1/4 bg-gray-100 rounded-lg flex items-center justify-center p-8">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-24 w-24 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
 
-<%= render @book %>
+        <!-- Book Details -->
+        <div class="w-full md:w-2/3 lg:w-3/4">
+          <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= @book.title %></h1>
+          <p class="text-xl text-gray-600 mb-6">by <%= @book.author %></p>
 
-<div>
-  <%= link_to "Edit this book", edit_book_path(@book) %> |
-  <% if policy(@book).borrow? %>
-    <%= link_to "Borrow this book", new_borrowing_path(book_id: @book.id) %> |
-  <% end %>
-  <%= link_to "Back to books", books_path %>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Genre</h3>
+              <p class="mt-1 text-lg font-medium text-gray-900">
+                <span class="px-3 py-1 rounded-full text-sm font-semibold bg-indigo-100 text-indigo-800">
+                  <%= @book.genre %>
+                </span>
+              </p>
+            </div>
 
-  <%= button_to "Destroy this book", @book, method: :delete %>
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">ISBN</h3>
+              <p class="mt-1 text-lg font-medium text-gray-900">
+                <code class="bg-gray-100 px-2 py-1 rounded"><%= @book.isbn %></code>
+              </p>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Total Copies</h3>
+              <p class="mt-1 text-lg font-medium text-gray-900"><%= @book.total_copies %></p>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Available Copies</h3>
+              <p class="mt-1 text-lg font-medium text-gray-900"><%= @book.available_copies %></p>
+            </div>
+          </div>
+
+          <!-- Borrow Button for Members -->
+          <% if current_user&.member? && @book.available_copies > 0 %>
+            <% if current_user.borrowings.where(book: @book, returned_at: nil).none? %>
+              <%= link_to "Borrow This Book", new_borrowing_path(book_id: @book.id),
+                  class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors" %>
+            <% else %>
+              <div class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">
+                You currently have this book checked out
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="mt-8 pt-6 border-t border-gray-200 flex justify-end space-x-3">
+        <%= link_to 'Back to Books', books_path, class: "px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50" %>
+        <% if policy(@book).edit? %>
+          <%= link_to 'Edit Book', edit_book_path(@book), class: "px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>

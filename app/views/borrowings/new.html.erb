@@ -1,21 +1,64 @@
-<h1>Do you want to borrow <%= @borrowing.book.title %>?</h1>
+<!-- app/views/borrowings/new.html.erb -->
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+  <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+    <div class="p-6 md:p-8">
+      <!-- Header -->
+      <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-800 mb-2">Confirm Book Borrowing</h1>
+        <p class="text-gray-600">Please review the details before borrowing</p>
+      </div>
 
-<p>
-  You'll have to return it by
-  <strong>
-    <%= l Time.now + 2.weeks, format: :long %>
-  </strong>
-</p>
+      <!-- Book Card -->
+      <div class="bg-blue-50 rounded-lg p-6 mb-8 border border-blue-100">
+        <div class="flex items-start">
+          <div class="flex-shrink-0 h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-xl font-semibold text-gray-800"><%= @borrowing.book.title %></h2>
+            <p class="text-gray-600">by <%= @borrowing.book.author %></p>
+            <div class="mt-2 flex flex-wrap gap-2">
+              <span class="px-2 py-1 text-xs font-medium rounded-full bg-indigo-100 text-indigo-800">
+                <%= @borrowing.book.genre %>
+              </span>
+              <span class="px-2 py-1 text-xs font-medium rounded-full bg-green-100 text-green-800">
+                Available: <%= @borrowing.book.available_copies %>/<%= @borrowing.book.total_copies %>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<%= form_with(model: @borrowing) do |form| %>
-  <%= form.hidden_field :book_id, value: @borrowing.book.id %>
+      <!-- Borrowing Terms -->
+      <div class="bg-gray-50 rounded-lg p-6 mb-8 border border-gray-200">
+        <h3 class="text-lg font-medium text-gray-800 mb-4">Borrowing Terms</h3>
+        <ul class="space-y-3 text-gray-700">
+          <li class="flex items-start">
+            <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <span>You can borrow this book for <strong>2 weeks</strong></span>
+          </li>
+          <li class="flex items-start">
+            <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+            <span>Due date: <strong><%= 2.weeks.from_now.to_date.to_formatted_s(:long) %></strong></span>
+          </li>
+        </ul>
+      </div>
 
-  <div>
-    <%= form.submit "Borrow" %> |
-    <%= link_to "Cancel", book_path(@borrowing.book), class: 'btn btn-outline-secondary' %>
+      <!-- Borrowing Form -->
+      <%= form_with(model: @borrowing, local: true, class: "space-y-6") do |f| %>
+        <%= f.hidden_field :book_id, value: @borrowing.book.id %>
+
+        <div class="flex justify-between pt-6 border-t border-gray-200">
+          <%= link_to "Cancel", book_path(@borrowing.book), class: "px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50" %>
+          <%= f.submit "Confirm Borrow", class: "px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 icon-action" %>
+        </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
-
-<div>
-  <%= link_to "Back to books", books_path %>
 </div>

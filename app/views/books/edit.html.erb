@@ -1,12 +1,14 @@
-<% content_for :title, "Editing book" %>
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Edit Book</h1>
 
-<h1>Editing book</h1>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden p-6">
+      <%= render 'form', book: @book %>
 
-<%= render "form", book: @book %>
-
-<br>
-
-<div>
-  <%= link_to "Show this book", @book %> |
-  <%= link_to "Back to books", books_path %>
+      <div class="mt-8 pt-6 border-t border-gray-200">
+        <%= link_to 'Show', @book, class: "text-blue-600 hover:text-blue-800 mr-4" %>
+        <%= link_to 'Back to Books', books_path, class: "text-gray-600 hover:text-gray-800" %>
+      </div>
+    </div>
+  </div>
 </div>
