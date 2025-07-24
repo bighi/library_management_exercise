@@ -10,9 +10,17 @@ For the librarian user, login with `email: librarian@email.com` and `password: t
 
 # Example of the interface
 
-![Example of the interface](interface_1.png)
+## List of Books
 
-![Example of the interface](interface_2.png)
+![Example of the interface](library_1.png)
+
+## Dashboard
+
+![Example of the interface](library_2.png)
+
+## Creating a Book
+
+![Example of the interface](library_3.png)
 
 # Decision log and thought process
 
