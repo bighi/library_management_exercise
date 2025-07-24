@@ -7,3 +7,11 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+User.create email: "test@email.com", password: "test123",
+  password_confirmation: "test123", role: :member
+
+30.times do
+  Book.create title: Faker::Book.title, author: Faker::Book.author,
+    genre: Faker::Book.genre, isbn: rand(11111111111..99999999999), total_copies: rand(2..8)
+end
