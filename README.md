@@ -20,7 +20,7 @@ go and look at the policies to see what each user can do.
 Available copies of a book: Initially I created an available_copies column in
 the books table, but later I realized that keeping it updated could be a problem.
 So I decided to create a method that calculates the number of available copies
-on the fly.
+on the fly. I'm still not happy with this solution, but it works for now.
 
 I added TailwindCSS because it makes it easy to style the application
 and provides a good set of utility classes to work with. I just wanted a quick
