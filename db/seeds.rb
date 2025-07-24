@@ -16,7 +16,7 @@ librarian = User.create email: "librarian@email.com", password: "test123",
 books = []
 
 30.times do
-  books < Book.create(title: Faker::Book.title, author: Faker::Book.author,
+  books << Book.create(title: Faker::Book.title, author: Faker::Book.author,
     genre: Faker::Book.genre, isbn: rand(11111111111..99999999999), total_copies: rand(2..8))
 end
 
@@ -39,3 +39,6 @@ Borrowing.create book: books.sample, user: member, borrowed_at: 55.days.ago,
   Borrowing.create book: books.sample, user: member, borrowed_at: borrow_date,
     due_at: borrow_date + 12.days
 end
+# Due today
+Borrowing.create book: books.sample, user: member, borrowed_at: 12.days.ago,
+    due_at: Date.current.end_of_day
