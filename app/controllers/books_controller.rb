@@ -4,8 +4,7 @@ class BooksController < ApplicationController
 
   # GET /books or /books.json
   def index
-    @books = Book.all.order(:title)
-    authorize @books
+    @books = policy_scope(Book).order(:title)
 
     respond_to do |format|
       format.html
