@@ -8,7 +8,9 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
-User.create email: "test@email.com", password: "test123",
+User.create email: "member@email.com", password: "test123",
+  password_confirmation: "test123", role: :member
+User.create email: "librarian@email.com", password: "test123",
   password_confirmation: "test123", role: :member
 
 30.times do
