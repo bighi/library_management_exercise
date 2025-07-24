@@ -1,3 +1,13 @@
+# Users and password
+
+For an easier testing, the seed file creates two a member user and a librarian user.
+
+Ensure the seed file is run with `rails db:seed` to create these users.
+
+For the member user, login with `email: member@email.com` and `password: test123`.
+
+For the librarian user, login with `email: librarian@email.com` and `password: test123`.
+
 # Decision log and thought process
 
 I used Devise instead of using the built-in authentication system in Rails
