@@ -23,7 +23,9 @@
   </head>
 
   <body>
-    <%= render "nav" %>
+    <% if current_user %>
+      <%= render "nav" %>
+    <% end %>
 
     <%= yield %>
   </body>
