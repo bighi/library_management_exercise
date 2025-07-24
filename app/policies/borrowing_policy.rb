@@ -15,6 +15,10 @@ class BorrowingPolicy < ApplicationPolicy
     user.librarian? || record.user == user
   end
 
+  def dashboard?
+    user.librarian?
+  end
+
   class Scope < Scope
     def resolve
       if user.librarian?

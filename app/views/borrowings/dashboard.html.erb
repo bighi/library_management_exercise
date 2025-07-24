@@ -1,0 +1,181 @@
+<!-- app/views/borrowings/dashboard.html.erb -->
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-8">Library Dashboard</h1>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-white shadow-lg rounded-lg p-6 border-t-4 border-blue-500">
+      <h3 class="text-sm font-medium text-gray-500">Total Books</h3>
+      <p class="mt-1 text-3xl font-semibold text-gray-900"><%= @stats[:total_books] %></p>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg p-6 border-t-4 border-green-500">
+      <h3 class="text-sm font-medium text-gray-500">Available Books</h3>
+      <p class="mt-1 text-3xl font-semibold text-gray-900"><%= @stats[:total_books] - @stats[:total_borrowed] %></p>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg p-6 border-t-4 border-yellow-500">
+      <h3 class="text-sm font-medium text-gray-500">Borrowed Books</h3>
+      <p class="mt-1 text-3xl font-semibold text-gray-900"><%= @stats[:total_borrowed] %></p>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg p-6 border-t-4 border-red-500">
+      <h3 class="text-sm font-medium text-gray-500">Overdue Books</h3>
+      <p class="mt-1 text-3xl font-semibold text-gray-900"><%= @stats[:overdue_books].count %></p>
+    </div>
+  </div>
+
+  <!-- Overdue Books Section -->
+  <div class="mb-12">
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">Overdue Books</h2>
+
+    <% if @stats[:overdue_books].any? %>
+      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Borrower</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Days Overdue</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <% @stats[:overdue_books].each do |borrowing| %>
+                <tr class="bg-red-50 hover:bg-red-100">
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                      <div class="flex-shrink-0 h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                      </div>
+                      <div>
+                        <div class="text-sm font-medium text-gray-900">
+                          <%= link_to borrowing.book.title, borrowing.book, class: "hover:text-blue-600 hover:underline" %>
+                        </div>
+                        <div class="text-sm text-gray-500"><%= borrowing.book.author %></div>
+                      </div>
+                    </div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-900"><%= borrowing.user.email %></div>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-red-600">
+                    <%= borrowing.due_at.to_date.to_formatted_s(:long) %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-sm text-red-600">
+                    <%= (Date.current - borrowing.due_at.to_date).to_i %>
+                  </td>
+                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <%= button_to 'Mark Returned', return_borrowing_path(borrowing),
+                        method: :post,
+                        class: "text-green-600 hover:text-green-900",
+                        form: { data: { turbo_confirm: "Mark '#{borrowing.book.title}' as returned?" } } %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% else %>
+      <div class="bg-green-50 border-l-4 border-green-400 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-green-700">
+              No overdue books! All books are returned on time.
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Due Today Section -->
+  <div class="mb-12">
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">Due Today</h2>
+
+    <% due_today = Borrowing.where(due_at: Time.current.all_day).active.includes(:book, :user) %>
+    <% if due_today.any? %>
+      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Borrower</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <%= render partial: "dashboard_due_borrowing", collection: due_today %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% else %>
+      <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-blue-700">
+              No books are due today.
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- All Due Section -->
+  <div class="mb-12">
+    <h2 class="text-xl font-semibold text-gray-700 mb-4">Due Later</h2>
+
+    <% due_today = Borrowing.where("due_at > ?", Date.today.end_of_day).active.includes(:book, :user) %>
+    <% if due_today.any? %>
+      <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Book</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Borrower</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <%= render partial: "dashboard_due_borrowing", collection: due_today %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <% else %>
+      <div class="bg-blue-50 border-l-4 border-blue-400 p-4">
+        <div class="flex">
+          <div class="flex-shrink-0">
+            <svg class="h-5 w-5 text-blue-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+              <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+            </svg>
+          </div>
+          <div class="ml-3">
+            <p class="text-sm text-blue-700">
+              No books are due today.
+            </p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+</div>

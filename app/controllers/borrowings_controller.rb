@@ -58,6 +58,20 @@ class BorrowingsController < ApplicationController
     end
   end
 
+  def dashboard
+    authorize Borrowing, :dashboard?
+
+    @due_today = Borrowing.where(due_at: Time.current.all_day).active
+    @due_after_today = Borrowing.active.includes(:user, :book) - @due_today
+
+    @stats = {
+      total_books: Book.count,
+      total_borrowed: Borrowing.active.count,
+      overdue_books: Borrowing.overdue.includes(:user, :book),
+      due_today: @due_today.count
+    }
+  end
+
   private
 
   def set_borrowing

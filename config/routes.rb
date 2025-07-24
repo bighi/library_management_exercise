@@ -4,14 +4,13 @@ Rails.application.routes.draw do
   resources :books do
     collection do
       get :search
-      get :dashboard
-    end
-    member do
-      post :borrow
     end
   end
 
   resources :borrowings do
+    collection do
+      get :dashboard
+    end
     member do
       post :return
     end
