@@ -11,7 +11,7 @@
 User.create email: "member@email.com", password: "test123",
   password_confirmation: "test123", role: :member
 User.create email: "librarian@email.com", password: "test123",
-  password_confirmation: "test123", role: :member
+  password_confirmation: "test123", role: :librarian
 
 30.times do
   Book.create title: Faker::Book.title, author: Faker::Book.author,
