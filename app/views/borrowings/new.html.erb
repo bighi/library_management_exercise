@@ -1,0 +1,21 @@
+<h1>Do you want to borrow <%= @borrowing.book.title %>?</h1>
+
+<p>
+  You'll have to return it by
+  <strong>
+    <%= l Time.now + 2.weeks, format: :long %>
+  </strong>
+</p>
+
+<%= form_with(model: @borrowing) do |form| %>
+  <%= form.hidden_field :book_id, value: @borrowing.book.id %>
+
+  <div>
+    <%= form.submit "Borrow" %> |
+    <%= link_to "Cancel", book_path(@borrowing.book), class: 'btn btn-outline-secondary' %>
+  </div>
+<% end %>
+
+<div>
+  <%= link_to "Back to books", books_path %>
+</div>

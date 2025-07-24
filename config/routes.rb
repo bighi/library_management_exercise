@@ -6,13 +6,16 @@ Rails.application.routes.draw do
       get :search
       get :dashboard
     end
-
     member do
       post :borrow
     end
   end
 
-  resources :borrowings
+  resources :borrowings do
+    member do
+      post :return
+    end
+  end
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
   # Can be used by load balancers and uptime monitors to verify that the app is live.

@@ -1,0 +1,69 @@
+# app/controllers/borrowings_controller.rb
+class BorrowingsController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_borrowing, only: [:return]
+
+  def index
+    @borrowings = policy_scope(Borrowing).includes(:book, :user)
+
+    respond_to do |format|
+      format.html
+      format.json { render json: @borrowings, include: [ :book, :user ] }
+    end
+  end
+
+  # def show
+  #   render json: @borrowing
+  # end
+
+  def new
+    @borrowing = Borrowing.new(book_id: params[:book_id])
+  end
+
+  def create
+    @borrowing = current_user.borrowings.new(
+      book_id: borrowing_params[:book_id],
+      borrowed_at: Time.current
+    )
+    authorize @borrowing
+
+    if @borrowing.save
+      respond_to do |format|
+        format.html { redirect_to borrowings_path, notice: "You borrowed \"#{@borrowing.book.title}\"" }
+        format.json { render json: @borrowing, status: :created }
+      end
+    else
+      respond_to do |format|
+        format.html
+        format.json { render json: @borrowing.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def return
+    authorize @borrowing, :return?
+
+    if @borrowing.return!
+      respond_to do |format|
+        format.html { redirect_to borrowings_path, notice: "Book marked as returned" }
+        format.json { render json: { status: "success", message: "Book returned" } }
+      end
+    else
+      respond_to do |format|
+        format.html { redirect_to borrowings_path, alert: "Failed to mark book as returned" }
+        format.json { render json: { status: "error", errors: [ "Failed to return book" ] }, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  private
+
+  def set_borrowing
+    @borrowing = Borrowing.find(params[:id])
+    authorize @borrowing
+  end
+
+  def borrowing_params
+    params.require(:borrowing).permit(:book_id)
+  end
+end

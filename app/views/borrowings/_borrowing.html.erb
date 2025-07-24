@@ -1,0 +1,16 @@
+<tr>
+  <td><%= borrowing.book.title %></td>
+  <td><%= l borrowing.borrowed_at, format: :short %></td>
+  <td><%= l (borrowing.returned_at || borrowing.due_at), format: :short %></td>
+  <% if policy(borrowing).return? && borrowing.returned_at.nil? %>
+    <td>
+      <%=
+        button_to 'Return',
+        return_borrowing_path(borrowing),
+        method: :post,
+        class: 'btn btn-sm btn-success',
+        form: { class: 'd-inline' }
+      %>
+    </td>
+  <% end %>
+</tr>

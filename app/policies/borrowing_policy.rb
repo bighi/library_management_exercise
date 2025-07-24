@@ -8,11 +8,11 @@ class BorrowingPolicy < ApplicationPolicy
   end
 
   def create?
-    user.member?
+    true # TODO: Verificar se não está duplicando?
   end
 
   def return?
-    user.librarian?
+    user.librarian? || record.user == user
   end
 
   class Scope < Scope

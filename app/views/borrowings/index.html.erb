@@ -1,0 +1,42 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Borrowings</h1>
+
+<% if @borrowings.count.zero? %>
+  <p>You haven't borrowed any book yet.
+<% end %>
+
+<% if @borrowings.active.any? %>
+  <h2>Borrowed Books</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Borrowed At</th>
+        <th>Return By</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: "borrowing", collection: @borrowings.active %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if @borrowings.returned.any? %>
+  <h2>Returned Books</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Title</th>
+        <th>Borrowed At</th>
+        <th>Returned At</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: "borrowing", collection: @borrowings.returned %>
+    </tbody>
+  </table>
+<% end %>
