@@ -39,3 +39,6 @@ on the fly. I'm still not happy with this solution, but it works for now.
 I added TailwindCSS because it makes it easy to style the application
 and provides a good set of utility classes to work with. I just wanted a quick
 way to style the application without having to write a lot of custom CSS.
+
+I ran out of time when writing request tests, so I removed them. I think I spent
+too much time making the application look pretty.

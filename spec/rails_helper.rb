@@ -73,10 +73,6 @@ RSpec.configure do |config|
   # Factory Bot
   config.include FactoryBot::Syntax::Methods
 
-  # Include Devise test helpers
-  config.include Devise::Test::IntegrationHelpers, type: :request
-
-
   # Shoulda Matchers
   Shoulda::Matchers.configure do |config|
     config.integrate do |with|
