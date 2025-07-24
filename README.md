@@ -21,3 +21,7 @@ Available copies of a book: Initially I created an available_copies column in
 the books table, but later I realized that keeping it updated could be a problem.
 So I decided to create a method that calculates the number of available copies
 on the fly.
+
+I added TailwindCSS because it makes it easy to style the application
+and provides a good set of utility classes to work with. I just wanted a quick
+way to style the application without having to write a lot of custom CSS.
