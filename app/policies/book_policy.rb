@@ -22,4 +22,8 @@ class BookPolicy < ApplicationPolicy
   def search?
     true
   end
+
+  def borrow?
+    user.borrowings.where(book_id: record.id).active.count.zero?
+  end
 end

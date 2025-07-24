@@ -4,6 +4,9 @@
 
 <div>
   <%= link_to "Edit this book", edit_book_path(@book) %> |
+  <% if policy(@book).borrow? %>
+    <%= link_to "Borrow this book", new_borrowing_path(book_id: @book.id) %> |
+  <% end %>
   <%= link_to "Back to books", books_path %>
 
   <%= button_to "Destroy this book", @book, method: :delete %>
