@@ -4,7 +4,9 @@ class BorrowingsController < ApplicationController
   before_action :set_borrowing, only: [:return]
 
   def index
-    @borrowings = policy_scope(Borrowing).includes(:book, :user)
+    borrowings = policy_scope(Borrowing).includes(:book, :user).order(returned_at: :desc, due_at: :desc)
+    @active_borrowings = borrowings.active
+    @returned_borrowings = borrowings.returned
 
     respond_to do |format|
       format.html

@@ -22,6 +22,12 @@ class Borrowing < ApplicationRecord
     book.update!(available_copies: book.available_copies + 1)
   end
 
+  def overdue?
+    return false if returned_at.present?
+
+    due_at < Time.current
+  end
+
   private
 
   def set_due_date
