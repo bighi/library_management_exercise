@@ -36,12 +36,16 @@ class Borrowing < ApplicationRecord
   end
 
   def user_cannot_borrow_same_book_twice
+    return if user.nil? || book_id.nil?
+
     if user.borrowings.active.exists?(book_id: book_id)
       errors.add(:base, "You have already borrowed this book")
     end
   end
 
   def book_available
+    return if book_id.nil?
+
     if book.available_copies <= 0
       errors.add(:base, "This book is not available for borrowing")
     end

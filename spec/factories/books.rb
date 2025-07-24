@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :book do
-    title { "MyString" }
-    author { "MyString" }
-    genre { "MyString" }
-    isbn { "MyString" }
-    total_copies { 1 }
-    available_copies { 1 }
+    sequence(:title) { |n| "Book #{n}" }
+    author { Faker::Book.author }
+    genre { Faker::Book.genre }
+    sequence(:isbn) { |n| "978#{n.to_s.rjust(10, '0')}" }
+    total_copies { Faker::Number.between(from: 1, to: 10) }
+    available_copies { total_copies }
   end
 end
