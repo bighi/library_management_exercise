@@ -24,6 +24,7 @@ class BookPolicy < ApplicationPolicy
   end
 
   def borrow?
-    user.borrowings.where(book_id: record.id).active.count.zero?
+    user.borrowings.where(book_id: record.id).active.count.zero? &&
+      !record.available_copies.zero?
   end
 end
