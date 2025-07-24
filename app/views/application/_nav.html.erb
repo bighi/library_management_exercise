@@ -15,7 +15,7 @@
       <div class="flex items-center space-x-4">
         <% if user_signed_in? %>
           <span class="text-sm"><%= current_user.email %></span>
-          <%= link_to 'Sign Out', destroy_user_session_path, method: :delete, class: "bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded" %>
+          <%= link_to "Sign Out", destroy_user_session_path, method: :delete, class: "nav-link", data: { turbo_method: :delete } %>
         <% else %>
           <%= link_to 'Sign In', new_user_session_path, class: "hover:text-blue-200" %>
           <%= link_to 'Sign Up', new_user_registration_path, class: "bg-blue-700 hover:bg-blue-800 px-3 py-1 rounded" %>
