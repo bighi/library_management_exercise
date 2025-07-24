@@ -12,4 +12,11 @@ class Book < ApplicationRecord
   def available_copies
     total_copies - borrowings.where(returned_at: nil).count
   end
+
+  def self.search(query)
+    where(
+      'title LIKE :q OR author LIKE :q OR genre LIKE :q',
+      q: "%#{query}%"
+    )
+  end
 end
