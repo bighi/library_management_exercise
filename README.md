@@ -37,6 +37,15 @@ You can log in using the API by sending a POST request to `/users/sign_in.json` 
 }
 ```
 
+This will return a JWT token that you can use for subsequent requests.
+
+Make sure to include your JWT token in the `Authorization` header for every other
+request you make to the API. The header should look like this:
+
+```
+Authorization: Bearer <your-jwt-token>
+```
+
 ## Creating a Book
 
 You can create a book using the API by sending a POST request to `/books.json` with the following JSON body:
