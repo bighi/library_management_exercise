@@ -117,6 +117,11 @@ the books table, but later I realized that keeping it updated could be a problem
 So I decided to create a method that calculates the number of available copies
 on the fly. I'm still not happy with this solution, but it works for now.
 
+I created separate controller actions for the member's list of borrowed books
+and the librarian's list of all borrowings because those pages have different
+requirements and different data to show. That way, each of those
+actions are going to be smaller and simpler, which is easier to maintain.
+
 I added TailwindCSS because it makes it easy to style the application
 and provides a good set of utility classes to work with. I just wanted a quick
 way to style the application without having to write a lot of custom CSS.
@@ -131,3 +136,9 @@ authentication.
 Also, for the API I decided to use the same routes as the web application,
 using rails feature of selecting the format in the URL. So /books will render
 the HTML view, while /books.json will render the JSON view for the API.
+
+Also, I made the application controller responsible for handling Pundit
+authorization errors so that I have a unified way for the API to return a
+403 Forbidden status code when a user tries to access a resource they are
+not authorized to access. This is simpler, but the downside is that
+the API will not return a specific error message, just a 403 status code.
