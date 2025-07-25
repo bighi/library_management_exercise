@@ -37,6 +37,17 @@ You can log in using the API by sending a POST request to `/users/sign_in.json` 
 }
 ```
 
+or
+
+```json
+{
+  "user": {
+    "email": "librarian@email.com",
+    "password": "test123"
+  }
+}
+```
+
 This will return a JWT token that you can use for subsequent requests.
 
 Make sure to include your JWT token in the `Authorization` header for every other
@@ -45,6 +56,12 @@ request you make to the API. The header should look like this:
 ```
 Authorization: Bearer <your-jwt-token>
 ```
+
+## Logging out
+
+If you want to test the other type of user, you have to log out first.
+
+You can log out using the API by sending a DELETE request to `/users/sign_out.json`.
 
 ## Creating a Book
 
