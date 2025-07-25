@@ -42,6 +42,7 @@ gem "thruster", require: false
 
 # Authentication
 gem "devise"
+gem "devise-jwt"
 
 # Authorization
 gem "pundit"

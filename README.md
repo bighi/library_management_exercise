@@ -22,6 +22,61 @@ For the librarian user, login with `email: librarian@email.com` and `password: t
 
 ![Example of the interface](library_3.png)
 
+# Using the API
+
+## Logging in
+
+You can log in using the API by sending a POST request to `/users/sign_in.json` with the following JSON body:
+
+```json
+{
+  "user": {
+    "email": "member@email.com",
+    "password": "test123"
+  }
+}
+```
+
+## Creating a Book
+
+You can create a book using the API by sending a POST request to `/books.json` with the following JSON body:
+
+```json
+{
+  "book": {
+    "title": "The Great Gatsby",
+    "author": "F. Scott Fitzgerald",
+    "isbn": "9780743273565",
+		"genre": "Science Fiction",
+    "total_copies": 5
+  }
+}
+```
+
+## Borrowing a Book
+
+You can borrow a book using the API by sending a POST request to `/borrowings.json` with the following JSON body:
+
+```json
+{
+  "borrowing": {
+    "book_id": 1
+  }
+}
+```
+
+## Returning a book
+
+You can return a book using the API by sending a POST request to `/borrowings/:id/return.json`, where `:id` is the ID of the borrowing record you want to return.
+Make sure to include your JWT token in the `Authorization` header.
+
+Example request:
+
+```
+POST /api/borrowings/1/return
+Authorization: Bearer <your-jwt-token>
+```
+
 # Decision log and thought process
 
 I used Devise instead of using the built-in authentication system in Rails
@@ -40,5 +95,13 @@ I added TailwindCSS because it makes it easy to style the application
 and provides a good set of utility classes to work with. I just wanted a quick
 way to style the application without having to write a lot of custom CSS.
 
-I ran out of time when writing request tests, so I removed them. I think I spent
-too much time making the application look pretty.
+I ran out of time when writing integration tests, so I removed them. I think I
+spent too much time making the application look pretty.
+
+I used the `devise-jwt` gem to handle JWT authentication because it integrates
+well with Devise and provides a simple way to handle JWT tokens for API
+authentication.
+
+Also, for the API I decided to use the same routes as the web application,
+using rails feature of selecting the format in the URL. So /books will render
+the HTML view, while /books.json will render the JSON view for the API.

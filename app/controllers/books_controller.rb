@@ -1,4 +1,6 @@
 class BooksController < ApplicationController
+  skip_before_action :verify_authenticity_token, if: -> { request.format.json? }
+
   before_action :authenticate_user!
   before_action :set_book, only: %i[show edit update destroy]
 

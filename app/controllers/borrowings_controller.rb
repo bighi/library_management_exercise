@@ -1,7 +1,9 @@
 # app/controllers/borrowings_controller.rb
 class BorrowingsController < ApplicationController
+  skip_before_action :verify_authenticity_token, if: -> { request.format.json? }
+
   before_action :authenticate_user!
-  before_action :set_borrowing, only: [ :return ]
+  before_action :set_borrowing, only: [ :show, :return ]
 
   def index
     borrowings = policy_scope(Borrowing).includes(:book, :user).order(returned_at: :desc, due_at: :desc)
@@ -10,7 +12,7 @@ class BorrowingsController < ApplicationController
 
     respond_to do |format|
       format.html
-      format.json { render json: @borrowings, include: [ :book, :user ] }
+      format.json { render json: borrowings, include: [ :book, :user ] }
     end
   end
 
